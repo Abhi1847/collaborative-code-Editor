@@ -84,7 +84,7 @@ app.use(cors({
   credentials: true
 }));
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 // Your routes and other middleware setup
 app.use('/', require('./routes/authRoutes'));
-server.listen(PORT, () => console.log(`Server is running on port  number${PORT}`));
+server.listen(PORT, () => console.log(`Server is running on port  number ${PORT}`));
