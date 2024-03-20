@@ -12,10 +12,13 @@ router.use(
     })
 )
 
-// router.get('/', test)
+router.get('/', test)
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/profile', getProfile)
+router.get('/editor', (req,res)=>{
+    res.json("Welcome")
+})
 
 
 module.exports =router

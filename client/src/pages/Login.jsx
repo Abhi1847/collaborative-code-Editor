@@ -26,7 +26,7 @@ export default function Login() {
       } else {
         setData({});
         toast.success('Login Successfully...');
-        navigate('/Home');
+        navigate('/codeeditor');
       }
     } catch (error) {
       console.error(error);

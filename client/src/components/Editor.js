@@ -21,6 +21,7 @@ function Editor({ socketRef, roomId, onCodeChange }) {
           lineNumbers: true,
         }
       );
+      // console.log(editorRef.current = editor)
       // for sync the code
       editorRef.current = editor;
 
