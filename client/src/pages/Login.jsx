@@ -35,7 +35,8 @@ export default function Login() {
 
   return (
     <div className="container">
-      <form onSubmit={loginUser}>
+      <div className='inner'>
+      <form onSubmit={loginUser} className='forms'>
         <label className="label">E-mail:</label>
         <input
           type="email"
@@ -58,6 +59,7 @@ export default function Login() {
           Login
         </button>
       </form>
+      </div>
     </div>
   );
 }

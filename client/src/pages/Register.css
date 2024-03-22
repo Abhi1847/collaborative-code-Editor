@@ -39,3 +39,18 @@
 .button:hover {
   background-color: #0056b3;
 }
+
+
+.inner{
+  box-shadow:5px 5px 85px rgba(0, 0, 0, 0.5);
+  height: 70vh;
+  width: 40vw;
+  align-items: center;
+  align-content: center;
+  background-color: rgb(147, 138, 138);
+  border-radius: 45px;
+}
+
+.forms{
+  margin: 50px;
+}

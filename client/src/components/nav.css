@@ -10,28 +10,38 @@
 }
 
 .link{
-    border: 2px;
-    padding: 5px;
+    /* border: 2px solid red; */
+    padding: 10px;
+    background-color: rgb(54, 50, 37);
+    border-radius: 25px;  
+    width: 97vw;
+    height: 55px;
+    align-content: center;
+    /* margin: 15px;  */
 }
 .l1{
     text-decoration: none;
     /* border: 2px solid red; */
-    color:black;
+    color:rgb(255, 255, 255);
     /* background-color: green; */
     margin: 10px;
     border-radius: 15px;
     padding: 10px;
+    align-items: center;
     
 }
 
 .l1:hover{
     background-color: green;
-    color: white;
+    color: rgb(0, 0, 0);
+    /* box-shadow:5px 5px 10px rgba(224, 84, 84, 0.5); */
+    font-style: bold;
+    
 }
 .r1{
     background-color: red;
     font-size: 15px;
 }
 #root{
-    background-color:rgb(61, 61, 147);
+    background-color:rgb(72, 72, 72);
 }

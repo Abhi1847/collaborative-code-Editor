@@ -7,4 +7,6 @@ export const ACTIONS = {
   CODE_CHANGE: "conde-change",
   SYNC_CODE: "sync-code",
   LEAVE: "leave",
+  CODE_EXECUTED:"codeexecution",
+  EXECUTE_CODE:"executedcode"
 };

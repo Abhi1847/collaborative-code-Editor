@@ -38,9 +38,22 @@ const CodeEdit = () => {
   }, [code, editor]);
 
   return (
+  <>
     <div>  
-      <div ref={editorRef}></div> 
+      <div ref={editorRef} style={{height:"100%"}}></div> 
+        <button
+              className="btn btn-primary mt-2 mb-2 px-5 btn-block"
+              // onClick={executeCode}
+            >
+              Execute Code
+        </button>
+        
     </div>
+    <div className="mt-3">
+            <h4 style={{height:"290px", backgroundColor:"gray"}}>Output:</h4>
+            {/* <pre>{output}</pre> */}
+    </div>
+  </>
   )
 }
 

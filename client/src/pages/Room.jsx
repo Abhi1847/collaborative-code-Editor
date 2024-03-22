@@ -43,7 +43,7 @@ function Room() {
     <div className="container-fluid">
       <div className="row justify-content-center align-items-center min-vh-100">
         <div className="col-12 col-md-6">
-          <div className="card shadow-sm p-2 mb-5 bg-secondary rounded">
+          <div className="card shadow-sm p-1 mb-2  rounded">
             <div className="card-body text-center bg-dark">
               <img
                 src="/images/codecast.png"

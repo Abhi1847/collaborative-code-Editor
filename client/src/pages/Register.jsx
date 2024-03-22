@@ -38,7 +38,8 @@ export default function Register() {
 
   return (
     <div className="container">
-      <form onSubmit={registerUser}>
+      <div className='inner'>
+      <form onSubmit={registerUser} className='forms'>
         <label className="label">Name:</label>
         <input
           type="text"
@@ -70,6 +71,7 @@ export default function Register() {
           Register
         </button>
       </form>
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ const User = require('../models/user')
 const {hashPassword, comparePassword} = require('../helpers/auth')
 const { json } = require('express')
 const jwt = require('jsonwebtoken')
+const Code = require('../models/code')
 
 //Home page endpoint
 const test = (req,res)=>{
@@ -97,9 +98,26 @@ if(token){
 }
 }
 
+const codeexe = async (req,res)=>{
+    try {
+        const { code, roomId } = req.body;
+        const newCode = new Code({ code, roomId });
+        await newCode.save();
+        res.status(201).json({ message: 'Code stored successfully' });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+    };
+
+
+
+
+
 module.exports={
     test,
     registerUser,
     loginUser,
-    getProfile
+    getProfile,
+    codeexe
 }
