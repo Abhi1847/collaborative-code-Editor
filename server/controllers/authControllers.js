@@ -3,6 +3,7 @@ const {hashPassword, comparePassword} = require('../helpers/auth')
 const { json } = require('express')
 const jwt = require('jsonwebtoken')
 const Code = require('../models/code')
+const Room = require('../models/room')
 
 //Home page endpoint
 const test = (req,res)=>{
@@ -111,7 +112,28 @@ const codeexe = async (req,res)=>{
     };
 
 
+    const roomcreate = async (req,res)=>{
+        try {
+            const { roomId, username, password } = req.body;
+            
+            // Check if the room already exists
+            const existingRoom = await Room.findOne({ roomId });
+            console.log(existingRoom)
+            if (existingRoom) {
+              return res.status(400).json({ msg: "Room already exists" });
+            }
+        
+            // Create a new room
+            const newRoom = new Room({ roomId, username, password });
+            await newRoom.save();
+            
+            res.status(201).json({ msg: "Room created successfully" });
+          } catch (error) {
+            console.error("Error creating room:", error);
+            res.status(500).json({ msg: "Server error" });
+          }
 
+    }
 
 
 module.exports={
@@ -119,5 +141,6 @@ module.exports={
     registerUser,
     loginUser,
     getProfile,
-    codeexe
+    codeexe,
+    roomcreate
 }
