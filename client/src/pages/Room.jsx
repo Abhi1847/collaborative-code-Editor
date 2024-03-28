@@ -124,13 +124,17 @@ function Room() {
   };
 
   const joinRoom = async () => {
+
+    
     if (!roomId || !username || !password) {
       toast.error("All fields are required");
       return;
     }
+    
+    
 
     try {
-      // Assuming you have a backend API to handle MongoDB operations
+      
       await axios.post("/room", { roomId, username, password });
       navigate(`/editor/${roomId}`, { state: { username } });
       toast.success("Room created successfully");

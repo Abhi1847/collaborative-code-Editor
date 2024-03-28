@@ -1,22 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css'; // Or any theme you prefer
-import CodeMirror from 'codemirror'; // Import CodeMirror
+import 'codemirror/theme/material.css';
+import CodeMirror from 'codemirror';
+import axios from 'axios'; // Import axios for making HTTP requests
+import { UserContext } from '../context/useContext';
+
 
 const CodeEdit = () => {
-  const editorRef = useRef(null); // Ref for the CodeMirror element
+  const { user } = useContext(UserContext);
+  const editorRef = useRef(null);
   const [code, setCode] = useState('');
-  const [editor, setEditor] = useState(null); // State to store the CodeMirror instance
-  const [output, setOutput] = useState(''); // State to store the output
+  const [editor, setEditor] = useState(null);
+  const [output, setOutput] = useState('');
 
   useEffect(() => {
     if (!editor && editorRef.current) {
       const newEditor = CodeMirror(editorRef.current, {
         value: code,
-        lineNumbers: true, // Enable line numbers
-        theme: 'material', // Or your chosen theme
-        mode: 'javascript', // Or any supported language mode
-        direction: 'ltr', // Explicitly set text direction to left-to-right (LTR)
+        lineNumbers: true,
+        theme: 'material',
+        mode: 'javascript',
+        direction: 'ltr',
         height: '100%'
       });
 
@@ -25,31 +29,45 @@ const CodeEdit = () => {
         setCode(newCode);
       });
 
-      setEditor(newEditor); // Set the CodeMirror instance in the state
+      setEditor(newEditor);
     }
   }, [editor, code]);
 
   const executeCode = () => {
     try {
-      let capturedOutput = ''; // Variable to capture the output
-      const originalLog = console.log; // Save the original console.log function
+      let capturedOutput = '';
+      const originalLog = console.log;
 
-      // Override console.log to capture the output
       console.log = (...args) => {
         capturedOutput += args.join(' ') + '\n';
       };
 
-      // Execute the code using eval
       eval(code);
 
-      // Restore the original console.log function
       console.log = originalLog;
 
-      // Update the output state with the captured output
       setOutput(capturedOutput);
     } catch (error) {
-      // Set error message if execution fails
       setOutput(`Error: ${error.message}\n`);
+    }
+  };
+
+  const saveCode = async () => {
+    try {
+      
+      const id = user.id
+      
+      // Make an HTTP POST request to save the code
+      const response = await axios.post('/savecode', { code ,id });
+
+      if (response.data.success) {
+        alert('Code saved successfully!');
+      } else {
+        alert('Failed to save code');
+      }
+    } catch (error) {
+      console.error('Error saving code:', error);
+      alert('Error saving code. Please try again later.');
     }
   };
 
@@ -59,15 +77,19 @@ const CodeEdit = () => {
         <div ref={editorRef} style={{ height: "100%" }}></div>
         <button
           className="btn btn-primary mt-2 mb-2 px-5 btn-block"
-          onClick={executeCode} // Call executeCode function on button click
+          onClick={executeCode}
         >
           Execute Code
         </button>
-
+        <button
+          className="btn btn-success mt-2 mb-2 px-5 btn-block"
+          onClick={saveCode}
+        >
+          Save Code
+        </button>
       </div>
       <div className="mt-3">
-        <h4 style={{ height: "290px", backgroundColor: "gray" }}>Output: <pre key={output}>{output}</pre></h4>
-         
+        <h4 style={{ height: "290px", backgroundColor: "gray" }}>Output: <br></br><pre key={output}>{output}</pre></h4>
       </div>
     </>
   )

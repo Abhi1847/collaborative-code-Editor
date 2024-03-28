@@ -8,6 +8,6 @@ const codeSchema = new Schema({
   });
   
   // Create a model
-  const Code = mongoose.model('Code', codeSchema);
+  const Coderoom = mongoose.model('Coderoom', codeSchema);
 
-  module.exports = Code
+  module.exports = Coderoom

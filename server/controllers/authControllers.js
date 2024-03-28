@@ -2,13 +2,22 @@ const User = require('../models/user')
 const {hashPassword, comparePassword} = require('../helpers/auth')
 const { json } = require('express')
 const jwt = require('jsonwebtoken')
-const Code = require('../models/code')
+const Coderoom = require('../models/coderoom')
 const Room = require('../models/room')
+const Coding = require('../models/coding')
+
+
+
+
 
 //Home page endpoint
 const test = (req,res)=>{
     res.json('Test is Working')
 }
+
+
+
+
 
 
 //Register page endpoint
@@ -54,20 +63,23 @@ const registerUser =  async (req,res)=>{
 }  
 
 
+
+
+
+
+
+
 //Login page endpoint
 const loginUser = async (req,res)=>{
     try {
         const {email, password} = req.body
-
         //check user is exist
         const user = await User.findOne({email})
-        
         if(!user){
             return res.json({
                 error:'No user Found'
             })
         }
-        
         const match = await comparePassword(password , user.password)
         
         if(match){
@@ -86,6 +98,10 @@ const loginUser = async (req,res)=>{
 }
 
 
+
+
+
+
 //getProfile endpoint
 const getProfile = (req,res)=>{
 const {token}= req.cookies
@@ -99,6 +115,15 @@ if(token){
 }
 }
 
+
+
+
+
+
+
+
+
+//Code execution end point
 const codeexe = async (req,res)=>{
     try {
         const { code, roomId } = req.body;
@@ -112,28 +137,103 @@ const codeexe = async (req,res)=>{
     };
 
 
-    const roomcreate = async (req,res)=>{
+  
+    
+
+
+
+
+    
+//room create end point    
+const roomcreate = async (req, res) => {
         try {
-            const { roomId, username, password } = req.body;
-            
-            // Check if the room already exists
-            const existingRoom = await Room.findOne({ roomId });
-            console.log(existingRoom)
-            if (existingRoom) {
-              return res.status(400).json({ msg: "Room already exists" });
-            }
-        
-            // Create a new room
+          const { roomId, username, password } = req.body;
+          
+          // Check if the room already exists
+          let existingRoom = await Room.findOne({ roomId });
+          if (!existingRoom) {
+            // Room doesn't exist, create a new room
             const newRoom = new Room({ roomId, username, password });
             await newRoom.save();
-            
             res.status(201).json({ msg: "Room created successfully" });
-          } catch (error) {
-            console.error("Error creating room:", error);
-            res.status(500).json({ msg: "Server error" });
+          } else {
+           
+            if (password !== existingRoom.password) {
+              return res.status(401).json({ msg: "Invalid password" });
+            }
+            res.status(200).json({ msg: "Joined existing room successfully" });
           }
+        } catch (error) {
+          console.error("Error creating/joining room:", error);
+          res.status(500).json({ msg: "Server error" });
+        }
+};
+      
 
+
+
+
+
+
+
+//Save code end point
+const savecode = async (req, res) => {
+    try {
+      const { code, id } = req.body;
+  
+      // Check if the user with the given ID already exists
+      const existingCode = await Coding.findOne({ id });
+  
+      if (existingCode) {
+        // If the user exists, update their code
+        existingCode.code = code;
+        await existingCode.save();
+      } else {
+        // If the user doesn't exist, create a new code document
+        const newCode = new Coding({ code, id });
+        await newCode.save();
+      }
+  
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error saving code:", error);
+      res.status(500).json({ success: false, error: "Server error" });
     }
+  }
+  
+
+
+
+
+
+
+
+  const savecoderoom = async (req, res) =>{
+    try {
+        const { code , roomId } = req.body;
+    
+        // Check if the room ID exists in the database
+        const existingCode = await Coderoom.findOne({ roomId });
+        console.log(existingCode)
+        // If room ID exists, update the code; otherwise, create new entry
+        if (existingCode) {
+          existingCode.code = code;
+          await existingCode.save();
+        } else {
+          await Coderoom.create({ roomId, code });
+        }
+    
+        // res.status(200).json({ message: 'Code saved successfully.' });
+        res.json({ success: true });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to save code.' });
+      }
+  }
+  
+
+
+
 
 
 module.exports={
@@ -142,5 +242,7 @@ module.exports={
     loginUser,
     getProfile,
     codeexe,
-    roomcreate
+    roomcreate,
+    savecode,
+    savecoderoom
 }
